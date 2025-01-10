@@ -1,9 +1,10 @@
 import React from 'react'
+import ImageGetter from '../Components/ImageGetter'
 
 const Home = () => {
   return (
     <div>
-      Main Home content
+      <ImageGetter/>
     </div>
   )
 }
