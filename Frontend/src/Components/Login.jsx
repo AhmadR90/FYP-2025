@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate(); // Initialize useNavigate
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         // Basic validation
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email regex
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailPattern.test(email)) {
             alert('Please enter a valid email address.');
             return;
@@ -21,18 +21,17 @@ const LoginForm = () => {
             return;
         }
 
-        
         console.log('Email:', email);
         console.log('Password:', password);
 
-        navigate('/home'); 
+        navigate('/home');
     };
 
     return (
         <div className="flex relative items-center justify-center min-h-screen bg-gray-100">
             <form 
                 onSubmit={handleSubmit} 
-                className="bg-white p-6 rounded shadow-md w-80 h-96"
+                className="bg-white p-6 rounded shadow-md w-80 h-auto"
             >
                 <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
                 <div className="mb-4">
@@ -67,7 +66,14 @@ const LoginForm = () => {
                 >
                     Login
                 </button>
-                
+                <div className="mt-4 text-center">
+                    <NavLink 
+                        to="/form-password" 
+                        className="text-blue-500 hover:underline"
+                    >
+                        Forget Password?
+                    </NavLink>
+                </div>
             </form>
         </div>
     );

@@ -1,10 +1,16 @@
 import React from 'react'
-import ImageGetter from '../Components/ImageGetter'
+ import PlantSlider from '../Components/Slider'
+import HeroSection from '../Components/HeroSection'
+import PlantImportance from '../Components/PlantsImportance'
+
 
 const Home = () => {
   return (
     <div>
-      <ImageGetter/>
+      {/* <ImageGetter/> */}
+      <PlantSlider/>
+      <HeroSection/>
+       <PlantImportance/>
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
+import UserProfile from "./UserProfile";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -37,7 +38,7 @@ const Header = () => {
           } md:flex md:items-center md:space-x-6`}
         >
           {/* Moved the links here to be before the Logout button */}
-          {["Home", "About","service"].map((item) => (
+          {["Home", "About", "check-plant"].map((item) => (
             <NavLink
               key={item}
               to={`/${item.toLowerCase()}`}
@@ -46,15 +47,18 @@ const Header = () => {
               {item}
             </NavLink>
           ))}
-        </nav>
 
-        {/* Call-to-Action Button */}
-        <NavLink
-          to="/login"
-          className="hidden md:block bg-green-800 hover:bg-green-700 font-bold px-4 py-2 rounded-md"
-        >
-          Logout
-        </NavLink>
+          {/* Call-to-Action Button and User Profile */}
+          <div className="flex items-center space-x-4">
+            <NavLink
+              to="/login"
+              className="hidden md:block bg-green-800 hover:bg-green-700 font-bold px-4 py-2 rounded-md"
+            >
+              Logout
+            </NavLink>
+            <UserProfile />
+          </div>
+        </nav>
       </div>
 
       {/* Mobile CTA Button */}
@@ -66,6 +70,7 @@ const Header = () => {
           >
             Logout
           </NavLink>
+          <UserProfile />
         </div>
       )}
     </header>

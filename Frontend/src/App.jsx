@@ -6,6 +6,9 @@ import Contact from "./pages/Contact";
 import Footer from "./Components/Footer";
 import Login from "./Components/Login";
 import SignupForm from "./Components/SignUp";
+import Service from "./pages/Service";
+import ForgetPassword from "./Components/ForgetPassword";
+
 
 function App() {
   return (
@@ -16,7 +19,9 @@ function App() {
           <Route path="/" element={<SignupForm />}></Route>
           <Route path="/home" element={<div><Header/><Home /> <Footer/></div>}></Route>
           <Route path="/about" element={<div><Header/><About /> <Footer/></div>}></Route>
+          <Route path="/check-plant" element={<div><Header/><Service/> <Footer/></div>}></Route>
           <Route path="login" element={<Login/>}></Route>
+          <Route path="/form-password" element={<ForgetPassword />} />
 
           {/* <Route path="register" element={<SignupForm />}></Route> */}
         </Routes>
