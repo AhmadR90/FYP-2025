@@ -1,27 +1,49 @@
 import React, { useState } from "react";
-import { useNavigate ,NavLink} from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
+import axios from "axios"; // Import axios
+
 const SignupForm = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: ""
+  });
   const [error, setError] = useState("");
+  const [checked, setChecked] = useState(false);
   const navigate = useNavigate();
-  const handleSubmit = (e) => {
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [id === "name" ? "fullName" : id]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Check if password and confirm password match
-    if (password !== confirmPassword) {
-      setError("Passwords do not match!");
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
       return;
     }
-    // Clear error if passwords match
-    setError("");
-    // Handle signup logic here
-    console.log("Name:", name);
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("Confirm Password:", confirmPassword);
-    navigate("/home");
+    if (!checked) {
+      setError("Please agree to the terms and conditions");
+      return;
+    }
+
+    try {
+      const res = await axios.post("http://localhost:5000/api/users/register", {
+        name: formData.fullName,
+        email: formData.email,
+        password: formData.password,
+      });
+      localStorage.setItem("token", res.data.token);
+      setError("");
+      navigate("/login");
+    } catch (err) {
+      setError(err.response?.data?.message || "Signup failed");
+    }
   };
 
   return (
@@ -44,8 +66,8 @@ const SignupForm = () => {
           <input
             type="text"
             id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={formData.fullName}
+            onChange={handleChange}
             required
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
@@ -60,8 +82,8 @@ const SignupForm = () => {
           <input
             type="email"
             id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={formData.email}
+            onChange={handleChange}
             required
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
@@ -76,27 +98,38 @@ const SignupForm = () => {
           <input
             type="password"
             id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={formData.password}
+            onChange={handleChange}
             required
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
-        <div className="mb-6">
+        <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="confirm-password"
+            htmlFor="confirmPassword"
           >
             Confirm Password
           </label>
           <input
             type="password"
-            id="confirm-password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            id="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
             required
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
+        </div>
+        <div className="mb-6">
+          <label className="flex items-center">
+            <input
+              type="checkbox"
+              checked={checked}
+              onChange={() => setChecked(!checked)}
+              className="mr-2"
+            />
+            <span className="text-sm">I agree to the terms and conditions</span>
+          </label>
         </div>
         <button
           type="submit"
@@ -104,9 +137,9 @@ const SignupForm = () => {
         >
           Sign Up
         </button>
-        <div >
-                    <p>Already have account <NavLink to={"/login"} className='text-blue-600 underline' >Login here</NavLink></p>
-                </div>
+        <div className="mt-4 text-center">
+          <p>Already have account? <NavLink to="/login" className="text-blue-600 underline">Login here</NavLink></p>
+        </div>
       </form>
     </div>
   );
